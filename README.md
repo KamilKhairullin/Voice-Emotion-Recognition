@@ -1,1 +1,2 @@
-# LeanSWDevelopement_team1
+# Project on the course Lean Software Development BS18
+team 1
