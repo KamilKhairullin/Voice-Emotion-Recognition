@@ -1,0 +1,2 @@
+sounddevice~=0.4.1
+scipy~=1.6.0
