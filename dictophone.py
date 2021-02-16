@@ -69,4 +69,3 @@ class Dictophone:
 		while self.is_recording:
 			data = self.stream.read(self.chunk)
 			self.frames.append(data)
-		print('kekw')
