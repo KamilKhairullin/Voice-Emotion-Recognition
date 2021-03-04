@@ -56,7 +56,7 @@ class Dictophone():
 	def stop_recording(self):
 		self.is_recording = False
 		print('recording complete')
-		self.filename = 'DataFiles/Testing/cutted/record2' + str(self.__get_num_of_outputs())
+		self.filename = 'data/record' + str(self.__get_num_of_outputs())
 		wf = wave.open(self.filename + '.wav', 'wb')
 		wf.setnchannels(self.channels)
 		wf.setsampwidth(self.p.get_sample_size(self.sample_format))

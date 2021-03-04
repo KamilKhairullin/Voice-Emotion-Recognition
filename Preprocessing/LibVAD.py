@@ -35,7 +35,7 @@ class WebRtcVad():
     def approximation(self):
         count = 0
         start = 0
-        hold = int(len(self.detectedVoice) * 0.07)
+        hold = int(len(self.detectedVoice) * 0.2)
         isStarted = False
         for i in range(0, len(self.detectedVoice) - 1):
             if self.detectedVoice[i] == 0:
@@ -53,7 +53,7 @@ class WebRtcVad():
     def printOutput(self):
         plt.plot(np.array(self.detectedVoice), label="Detected")
         plt.legend()
-        plt.show(block=True)
+        plt.show()
 
 
         
@@ -64,27 +64,34 @@ class WebRtcVad():
         end = 0
         startsAndCuts = list()
         isStarted = False
-        hold = int(len(self.detectedVoice) * 0.07)
+        hold = int(len(self.detectedVoice) * 0.03)
         for i in range(0, len(self.detectedVoice) - 1):
             if self.detectedVoice[i] == 1:
                 count = count + 1
                 if not isStarted:
                     start = i
-                    #print('Started at ', i)
                     isStarted = True
             elif self.detectedVoice[i] == 0 and isStarted:
                 isStarted = False
                 end = i
-                #print('Ended at ', i)
                 if count > hold:
-                    path = os.path.join(pathToSave, str(number) + '.wav')
-                    startsAndCuts.append((start, end))
+                    path = pathToSave + "/" +  str(number) + '.wav'
                     wf.write(path, 44200, self.dt[start * 120:end * 120])
-                    print(path + ' cutted and saved.')
+                    print('Found voice activity in range between {} and {}'.format(start*120/44200, end*120/44200))
+                    print('This record is saved as ' + path )
                     number = number + 1
                 count = 0
-        print(startsAndCuts)
 
+            if  i == len(self.detectedVoice) - 2 and isStarted:
+                isStarted = False
+                end = i
+                if count > hold:
+                    path = pathToSave + "/" +  str(number) + '.wav'
+                    wf.write(path, 44200, self.dt[start * 120:end * 120])
+                    print('Found voice activity in range between {} and {}'.format(start*120/44200, end*120/44200))
+                    print('This record is saved as ' + path )
+                    number = number + 1
+                count = 0
 
     def __readWAV(self, wavFile):
         rate, data = wf.read(wavFile)
