@@ -7,4 +7,4 @@ team 1
 * Alina Paukova
 * Alexander Trushin
 ## Project description
-We careated an audio recorder with gui that is able to record audio, classify user's speech emotion.
+We created an audio recorder with gui that is able to record audio, classify user's speech emotion.
