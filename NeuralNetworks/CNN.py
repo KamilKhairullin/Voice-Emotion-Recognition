@@ -19,16 +19,16 @@ class CNN:
 
     def __makeModel(self, inputShape, classes, activationFunction='sigmoid'):
         model = Sequential()
-        model.add(Conv1D(64, kernel_size=(10), activation='relu', input_shape=inputShape))
-        model.add(Conv1D(128, kernel_size=(10),activation='relu',kernel_regularizer=l2(0.01), bias_regularizer=l2(0.01)))
+        model.add(Conv1D(256, kernel_size=(10), activation='relu', input_shape=inputShape))
+        model.add(Conv1D(256, kernel_size=(10),activation='relu',kernel_regularizer=l2(0.01), bias_regularizer=l2(0.01)))
         model.add(MaxPooling1D(pool_size=(8)))
-        model.add(Dropout(0.4))
+        model.add(Dropout(0.3))
         model.add(Conv1D(128, kernel_size=(10),activation='relu'))
         model.add(MaxPooling1D(pool_size=(8)))
-        model.add(Dropout(0.4))
+        model.add(Dropout(0.3))
         model.add(Flatten())
-        model.add(Dense(256, activation='relu'))
-        model.add(Dropout(0.4))
+        model.add(Dense(356, activation='relu'))
+        model.add(Dropout(0.3))
         model.add(Dense(classes, activation='sigmoid'))
         return model
 

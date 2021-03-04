@@ -24,12 +24,6 @@ class DataLoader():
     def __init__(self, path, testSize):
         self.path = path
         self.testSize = testSize
-    
-    def printSpectogram(self, path):
-        sig, fs = librosa.load(path)   
-        S = librosa.feature.melspectrogram(y=sig, sr=fs)
-        librosa.display.specshow(librosa.power_to_db(S, ref=np.max))
-        plt.show(block=True)
 
     def extractFeature(self, fileName, mfcc, chroma, mel):
         with soundfile.SoundFile(fileName) as sound_file:

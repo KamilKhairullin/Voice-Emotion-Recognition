@@ -2,6 +2,7 @@ import numpy as np
 import os
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
+import pickle
 
 class MLPC:
 
@@ -15,10 +16,17 @@ class MLPC:
         print('Data fitted.')
     
     def predict(self, x_test):
-        return self.model.predict(x_test)
+        return self.model.predict_proba(x_test)
 
     def printStats(self, y_test, y_pred):
         result = accuracy_score(y_true=y_test, y_pred=y_pred)
         print("Accuracy: {:.2f}%".format(result*100))
         return result
 
+    def saveModel(self, name):
+        with open(name, 'wb') as f:
+            pickle.dump(self.model, f)
+    
+    def loadModel(self, path):
+        with open(path, 'rb') as f:
+            self.model = pickle.load(f)
