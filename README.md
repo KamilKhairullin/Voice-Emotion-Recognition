@@ -1,5 +1,5 @@
 # Project on the course Lean Software Development BS18
-team 1
+Audio tracker team 1
 ## Team members
 * Kamil Khayrullin
 * Tagir Shigapov
