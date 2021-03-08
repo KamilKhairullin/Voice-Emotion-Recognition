@@ -20,7 +20,10 @@ class GUI():
 		self.label1.grid(row=0, sticky=W, rowspan=5)
 
 		self.label2 = Label(self.master, text='')
-		self.label2.grid(row=2, column=5)
+		self.label2.grid(row=2, column=0)
+
+		self.label3 = Label(self.master, text='')
+		self.label3.grid(row=2, column=3)
 
 		self.start_b = Button(self.master, text="Start", command=self.__start)
 		self.start_b.grid(row=0, column=3, columnspan=2, ipadx = 50, ipady = 50, rowspan=2,
@@ -47,6 +50,7 @@ class GUI():
 	def __resume(self):
 		self.label1.config(text='Recording...')
 		self.label2.config(text='')
+		self.label3.config(text='')
 		self.start_b.config(text='Pause', command=self.__pause)
 		self.dictophone.resume_recording()
 
@@ -54,6 +58,7 @@ class GUI():
 	def __pause(self):
 		self.label1.config(text='Paused')
 		self.label2.config(text='')
+		self.label3.config(text='')
 		self.start_b.config(text='Resume', command=self.__resume)
 		self.dictophone.pause_recording()
 
@@ -61,10 +66,13 @@ class GUI():
 	def __stop(self):
 		self.label1.config(text='Press start to record')
 		self.label2.config(text='')
+		self.label3.config(text='')
 		self.start_b.config(text='Start', command=self.__start)
 		self.dictophone.stop_recording()
 
 
 	def __action(self):
 		ans = action()
-		self.label2.config(text=ans)
+		print(ans[1])
+		self.label2.config(text=ans[0])
+		self.label3.config(text=ans[1])

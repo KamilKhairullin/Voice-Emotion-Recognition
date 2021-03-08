@@ -29,6 +29,8 @@ def action():
     pathToCutted = 'data/cutted'
     pathToModel = 'model.pkl'
     pathToCuttedAndFiltered = 'data/cuttedAndFiltered'
+    cuts = ""
+    recognitions = ""
     dataLoader = DataLoader('', 0.15)
     model = MLPC()
     a = ButterworthFilter()
@@ -40,7 +42,7 @@ def action():
     x.test_process_file(pathToRecord)
     x.approximation()
     #x.printOutput()
-    x.cutAndSave(pathToCutted, 0)
+    cuts += x.cutAndSave(pathToCutted, 0)
     print('Voice activity detection completed. Voice cutted and saved.')
 
     for r, d, f in os.walk(pathToCutted):
@@ -57,9 +59,10 @@ def action():
             p = model.predict(np.array(test))
             p = np.squeeze(p)
             if(p[0] > p[1]):
-                return 'This voice is happy with probability {:.2f} %'.format(p[0] * 100)
+                recognitions += ' \nThis voice is happy with probability {:.2f} %'.format(p[0] * 100)
             else:
-                return 'This voice is sad with probability {:.2f} %'.format(p[1] * 100)
+                recognitions += ' \nThis voice is sad with probability {:.2f} %'.format(p[1] * 100)
     deleteFiles(pathToCutted)
     deleteFiles(pathToCuttedAndFiltered)
+    return [cuts, recognitions]
 
