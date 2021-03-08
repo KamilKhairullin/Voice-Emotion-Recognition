@@ -27,7 +27,7 @@ def runVADExapmle(pathToWav):
 def action():
     pathToRecord = 'data/record1.wav'
     pathToCutted = 'data/cutted'
-    pathToModel = 'model.pkl'
+    pathToModel = '../model.pkl'
     pathToCuttedAndFiltered = 'data/cuttedAndFiltered'
     dataLoader = DataLoader('', 0.15)
     model = MLPC()
