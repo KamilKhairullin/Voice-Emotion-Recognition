@@ -53,7 +53,7 @@ class WebRtcVad():
     def printOutput(self):
         plt.plot(np.array(self.detectedVoice), label="Detected")
         plt.legend()
-        plt.show()
+        plt.show(block= False)
 
 
         

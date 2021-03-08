@@ -62,7 +62,7 @@ class VAD():
         axs[2].legend()
         axs[2].set_title("Detected vs. non-detected region")
 
-        plt.show(block=True)
+        plt.show(block=False)
 
     def __readWAV(self, wavFile):
         rate, data = wf.read(wavFile)
