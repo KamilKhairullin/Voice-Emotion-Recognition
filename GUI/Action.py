@@ -57,9 +57,9 @@ def action():
             p = model.predict(np.array(test))
             p = np.squeeze(p)
             if(p[0] > p[1]):
-                print('This is happy with probability {:.2f} %'.format(p[0] * 100))
+                return 'This voice is happy with probability {:.2f} %'.format(p[0] * 100)
             else:
-                print('This is sad with probability {:.2f} %'.format(p[1] * 100))
+                return 'This voice is sad with probability {:.2f} %'.format(p[1] * 100)
     deleteFiles(pathToCutted)
     deleteFiles(pathToCuttedAndFiltered)
 
