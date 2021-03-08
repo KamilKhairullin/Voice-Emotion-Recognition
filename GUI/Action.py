@@ -21,7 +21,7 @@ def runVADExapmle(pathToWav):
     vad.smoothSpeechDetection()
     vad.approximation()
     vad.printOutput()
-    return vad 
+    return vad
 
 
 def action():
@@ -39,7 +39,8 @@ def action():
     x = WebRtcVad()
     x.test_process_file(pathToRecord)
     x.approximation()
-    #x.printOutput()
+    x.printOutput()
+    runVADExapmle(pathToRecord)
     x.cutAndSave(pathToCutted, 0)
     print('Voice activity detection completed. Voice cutted and saved.')
 
@@ -62,4 +63,3 @@ def action():
                 return 'This voice is sad with probability {:.2f} %'.format(p[1] * 100)
     deleteFiles(pathToCutted)
     deleteFiles(pathToCuttedAndFiltered)
-
