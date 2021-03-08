@@ -24,7 +24,7 @@ class Dictophone():
 		self.is_recording = None
 
 	def __get_num_of_outputs(self):
-		files = [f for f in os.listdir('.') if os.path.isfile(f)]
+		files = [f for f in os.listdir('') if os.path.isfile(f)]
 		max_index = 0
 		for f in files:
 			if 'output' in f:

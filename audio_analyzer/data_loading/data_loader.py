@@ -4,7 +4,7 @@ import numpy as np
 import librosa
 import librosa.display
 import soundfile
-import matplotlib.pyplot as plt
+
 
 class DataLoader():
     x_data = []

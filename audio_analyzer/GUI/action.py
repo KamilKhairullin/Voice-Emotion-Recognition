@@ -1,11 +1,11 @@
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=RuntimeWarning)
-from NeuralNetworks.MLPC import MLPC
-from DataLoading.DataLoader import DataLoader
-from Preprocessing.ButterworthFilter import ButterworthFilter
-from Preprocessing.VoiceActivityDetection import VAD
-from Preprocessing.LibVAD import WebRtcVad
+from neural_networks import MLPC
+from data_loading import DataLoader
+from preprocessing.butterworth_filter import ButterworthFilter
+from preprocessing.voice_activity_detection import VAD
+from preprocessing.lib_vad import WebRtcVad
 import numpy as np
 import os
 

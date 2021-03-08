@@ -1,7 +1,8 @@
-from GUI.Dictophone import Dictophone
+from .dictaphone import Dictophone
 from tkinter import *
-from GUI.Action import action
+from .action import action
 import os
+
 
 class GUI():
 	def __ensure_dir(self, file_path):
