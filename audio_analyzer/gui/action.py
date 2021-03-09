@@ -39,7 +39,7 @@ def action():
     x = WebRtcVad()
     x.test_process_file(pathToRecord)
     x.approximation()
-    #x.printOutput()
+    x.printOutput()
     cuts = x.cutAndSave(pathToCutted, 0)
     emotions = ""
     print('Voice activity detection completed. Voice cutted and saved.')
@@ -50,7 +50,7 @@ def action():
             tmpSave = pathToCuttedAndFiltered + '/' + file
             print('Removing noise...')
             a.removeNoise(tmpFile, tmpSave)
-            #runVADExapmle(tmpSave)
+            # runVADExapmle(tmpSave)
             print('Noise removed.')
 
             test = dataLoader.extractFeature(tmpSave, mfcc=True, chroma=True, mel=True)

@@ -78,18 +78,18 @@ class WebRtcVad():
                 if count > hold:
                     path = pathToSave + "/" +  str(number) + '.wav'
                     wf.write(path, 44200, self.dt[start * 120:end * 120])
-                    cuts += ('\nFound voice activity in range between {} and {}.'.format(start*120/44200, end*120/44200))
+                    cuts += ('\nFound voice activity in range between {:.2f} and {:.2f}.'.format(start*120/44200, end*120/44200))
                     print('This record is saved as ' + path )
                     number = number + 1
                 count = 0
 
-            if  i == len(self.detectedVoice) - 2 and isStarted:
+            if i == len(self.detectedVoice) - 2 and isStarted:
                 isStarted = False
                 end = i
                 if count > hold:
                     path = pathToSave + "/" +  str(number) + '.wav'
                     wf.write(path, 44200, self.dt[start * 120:end * 120])
-                    cuts += ('\nFound voice activity in range between {} and {}.'.format(start*120/44200, end*120/44200))
+                    cuts += ('\nFound voice activity in range between {:.2f} and {:.2f}.'.format(start*120/44200, end*120/44200))
                     print('This record is saved as ' + path )
                     number = number + 1
                 count = 0
