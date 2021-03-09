@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import soundfile as sf
 
+
 class ButterworthFilter():
     
     def printSpectogram(self, path):
@@ -18,7 +19,7 @@ class ButterworthFilter():
         highcut = 125.0
         sample, sample_rate = librosa.load(pathToFile, 
                                     sr=sampling_rate, dtype = np.float64)
-        a, b = scipy.signal.butter(4, 300. / (sampling_rate / 2.), 'low')
+        a, b = scipy.signal.butter(4, 200. / (sampling_rate / 2.), 'low')
         sample_butterworth = scipy.signal.filtfilt(a, b, sample)
         sf.write(pathToSave, data = sample_butterworth, samplerate = sampling_rate)
 

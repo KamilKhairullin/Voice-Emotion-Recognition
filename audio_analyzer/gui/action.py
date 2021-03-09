@@ -1,11 +1,11 @@
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=RuntimeWarning)
-from NeuralNetworks.MLPC import MLPC
-from DataLoading.DataLoader import DataLoader
-from Preprocessing.ButterworthFilter import ButterworthFilter
-from Preprocessing.VoiceActivityDetection import VAD
-from Preprocessing.LibVAD import WebRtcVad
+from audio_analyzer.neural_networks import MLPC
+from audio_analyzer.data_loading import DataLoader
+from audio_analyzer.preprocessing.butterworth_filter import ButterworthFilter
+from audio_analyzer.preprocessing.voice_activity_detection import VAD
+from audio_analyzer.preprocessing.lib_vad import WebRtcVad
 import numpy as np
 import os
 
@@ -29,8 +29,6 @@ def action():
     pathToCutted = 'data/cutted'
     pathToModel = 'model.pkl'
     pathToCuttedAndFiltered = 'data/cuttedAndFiltered'
-    cuts = ""
-    recognitions = ""
     dataLoader = DataLoader('', 0.15)
     model = MLPC()
     a = ButterworthFilter()
@@ -41,8 +39,9 @@ def action():
     x = WebRtcVad()
     x.test_process_file(pathToRecord)
     x.approximation()
-    #x.printOutput()
-    cuts += x.cutAndSave(pathToCutted, 0)
+    x.printOutput()
+    cuts = x.cutAndSave(pathToCutted, 0)
+    emotions = ""
     print('Voice activity detection completed. Voice cutted and saved.')
 
     for r, d, f in os.walk(pathToCutted):
@@ -51,7 +50,7 @@ def action():
             tmpSave = pathToCuttedAndFiltered + '/' + file
             print('Removing noise...')
             a.removeNoise(tmpFile, tmpSave)
-            #runVADExapmle(tmpSave)
+            # runVADExapmle(tmpSave)
             print('Noise removed.')
 
             test = dataLoader.extractFeature(tmpSave, mfcc=True, chroma=True, mel=True)
@@ -59,10 +58,10 @@ def action():
             p = model.predict(np.array(test))
             p = np.squeeze(p)
             if(p[0] > p[1]):
-                recognitions += ' \nThis voice is happy with probability {:.2f} %'.format(p[0] * 100)
+                emotions += '\nThis voice is happy with probability {:.2f} %'.format(p[0] * 100)
             else:
-                recognitions += ' \nThis voice is sad with probability {:.2f} %'.format(p[1] * 100)
+                emotions += '\nThis voice is sad with probability {:.2f} %'.format(p[1] * 100)
     deleteFiles(pathToCutted)
     deleteFiles(pathToCuttedAndFiltered)
-    return [cuts, recognitions]
+    return [cuts, emotions]
 
