@@ -2,6 +2,9 @@
 .vscode/
 .idea/
 
+# Folder with audio
+data/
+
 # Vagrant
 .vagrant/
 
