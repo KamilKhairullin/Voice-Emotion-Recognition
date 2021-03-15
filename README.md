@@ -2,7 +2,7 @@
 Audio tracker team 1
 
 ## Install
-1) Install Python 3.8
+1) Install [Python 3.8](https://www.python.org/downloads/)
 2) Clone this repository and go to project folder
 ```shell
 git clone https://github.com/KamilKhairullin/LeanSWDevelopement_team1.git
