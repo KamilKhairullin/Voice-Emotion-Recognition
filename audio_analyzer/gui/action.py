@@ -1,11 +1,11 @@
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=RuntimeWarning)
-from audio_analyzer.neural_networks import MLPC
-from audio_analyzer.data_loading import DataLoader
-from audio_analyzer.preprocessing.butterworth_filter import ButterworthFilter
-from audio_analyzer.preprocessing.voice_activity_detection import VAD
-from audio_analyzer.preprocessing.lib_vad import WebRtcVad
+from NeuralNetworks.MLPC import MLPC
+from DataLoading.DataLoader import DataLoader
+from Preprocessing.ButterworthFilter import ButterworthFilter
+from Preprocessing.VoiceActivityDetection import VAD
+from Preprocessing.LibVAD import WebRtcVad
 import numpy as np
 import os
 
@@ -21,13 +21,34 @@ def runVADExapmle(pathToWav):
     vad.smoothSpeechDetection()
     vad.approximation()
     vad.printOutput()
-    return vad 
+    return vad
 
+def runMLPCExample(pathToData):
+    mlpc = MLPC()
+    dataLoader = DataLoader(pathToData, 0.25)
+    x_train,x_test,y_train,y_test = dataLoader.loadData()
+    mlpc.fit(x_train, y_train)
+    y_pred = mlpc.predict(x_test)
+    mlpc.printStats(y_test, y_pred)
+    mlpc.saveModel('threeEmotions')
 
 def action():
+    '''
+    path = 'dataset'
+    pathToSave = 'normalizedDataset'
+    a = ButterworthFilter()
+    for r, d, f in os.walk(pathToSave):
+        for file in f:
+            tmpFile = r + '/' + file
+            tmpSave = pathToSave + '/' + r.split(os.sep)[1] + '/' + file
+            #a.normalize(tmpFile, tmpSave)
+            a.emphasis(tmpFile, tmpFile)
+            print(tmpSave)
+    '''
     pathToRecord = 'data/record1.wav'
     pathToCutted = 'data/cutted'
-    pathToModel = 'model.pkl'
+
+    pathToModel = 'threeEmotions.pkl'
     pathToCuttedAndFiltered = 'data/cuttedAndFiltered'
     dataLoader = DataLoader('', 0.15)
     model = MLPC()
@@ -40,8 +61,7 @@ def action():
     x.test_process_file(pathToRecord)
     x.approximation()
     x.printOutput()
-    cuts = x.cutAndSave(pathToCutted, 0)
-    emotions = ""
+    x.cutAndSave(pathToCutted, 0)
     print('Voice activity detection completed. Voice cutted and saved.')
 
     for r, d, f in os.walk(pathToCutted):
@@ -49,19 +69,20 @@ def action():
             tmpFile = pathToCutted + '/' + file
             tmpSave = pathToCuttedAndFiltered + '/' + file
             print('Removing noise...')
-            a.removeNoise(tmpFile, tmpSave)
-            # runVADExapmle(tmpSave)
+            #runVADExapmle(tmpFile)
+            a.normalize(tmpFile, tmpSave)
+            #a.emphasis(tmpSave, tmpSave)
             print('Noise removed.')
 
             test = dataLoader.extractFeature(tmpSave, mfcc=True, chroma=True, mel=True)
             test = test.reshape(1, 180)
             p = model.predict(np.array(test))
-            p = np.squeeze(p)
-            if(p[0] > p[1]):
-                emotions += '\nThis voice is happy with probability {:.2f} %'.format(p[0] * 100)
-            else:
-                emotions += '\nThis voice is sad with probability {:.2f} %'.format(p[1] * 100)
+            print(p)
+            #p = np.squeeze(p)
+            #if(p[0] > p[1]):
+            #    if p[0] > p[2]:
+            #        print('This is happy with probability {:.2f} %'.format(p[0] * 100))
+            #else:
+            #   print('This is sad with probability {:.2f} %'.format(p[1] * 100))
     deleteFiles(pathToCutted)
     deleteFiles(pathToCuttedAndFiltered)
-    return [cuts, emotions]
-
