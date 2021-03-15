@@ -482,7 +482,7 @@ dev = ["nose", "check-manifest", "unittest2", "zest.releaser", "psutil", "memory
 [metadata]
 lock-version = "1.1"
 python-versions = "3.8.*"
-content-hash = "5537dcfdf65a61d72a5d0cc113ca50c96bf231c0ad04b884802caee7c7680c96"
+content-hash = "6ba2fbd4a5b4d4e78797d5d8208e91aed729a8086fa5cf282367f6739a38f5fd"
 
 [metadata.files]
 appdirs = [
