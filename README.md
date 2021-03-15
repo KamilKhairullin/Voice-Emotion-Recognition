@@ -2,25 +2,25 @@
 Audio tracker team 1
 
 ## Install
-1) Install python 3.8
-2) Create virtual environment
+1) Install Python 3.8
+2) Clone this repository and go to project folder
 ```shell
-python3.8 -m venv venv
+git clone https://github.com/KamilKhairullin/LeanSWDevelopement_team1.git
+cd LeanSWDevelopement_team1
 ```
-3) Activate virtual environment
-- Linux 
+3) Install poetry
+- MacOS / Linux / Bash on Windows 
 ```shell
-source venv/bin/activate
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
 ```
-
-- Windows:
+(replace `python` with `python3` or `python3.8` if you have several python version)
+- Windows Powershell
 ```
-venv\Scripts\activate.bat
+(Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -UseBasicParsing).Content | python -
 ```
-4) Install packages
+4) Install required packages
 ```shell
-python -m pip install poetry
-poetry install
+poetry install --no-dev
 ```
 
 ## Run

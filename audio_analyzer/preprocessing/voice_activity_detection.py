@@ -1,13 +1,13 @@
-from os import path
-import matplotlib.pyplot as plt
-import numpy as np
-import scipy.io.wavfile as wf 
 import os
 
-class VAD():
+import matplotlib.pyplot as plt
+import numpy as np
+import scipy.io.wavfile as wf
 
+
+class VAD:
     def __init__(self, fileName):
-        self.data, self.rate = self.__readWAV(fileName) 
+        self.data, self.rate = self.__readWAV(fileName)
         self.speechRatioList = []
         self.detectedVoice = []
         self.meanData = []
@@ -23,42 +23,44 @@ class VAD():
         self.window = 960
 
     def run(self):
-        while (self.SAMPLE_START < (len(self.data) - self.SAMPLE_WINDOW)):
+        while self.SAMPLE_START < (len(self.data) - self.SAMPLE_WINDOW):
             # Select only the region of the data in the window
             SAMPLE_END = self.SAMPLE_START + self.SAMPLE_WINDOW
-            if SAMPLE_END >= len(self.data): 
-                SAMPLE_END = len(self.data)-1
-            dataWindow = self.data[int(self.SAMPLE_START):int(SAMPLE_END)]
+            if SAMPLE_END >= len(self.data):
+                SAMPLE_END = len(self.data) - 1
+            dataWindow = self.data[int(self.SAMPLE_START): int(SAMPLE_END)]
             self.meanData.append(np.mean(dataWindow))
             # Full energy
             energyFreq = self.__connectEnergyWithFrequencies(dataWindow)
             sumFullEnergy = sum(energyFreq.values())
-    
+
             # Voice energy
             sumVoiceEnergy = self.__sumEnergyInBand(energyFreq)
             # Speech ratio
-            speechRatio = sumVoiceEnergy/sumFullEnergy
+            speechRatio = sumVoiceEnergy / sumFullEnergy
             self.speechRatioList.append(speechRatio)
             self.detectedVoice.append(int(speechRatio > self.THRESHOLD))
-    
+
             self.SAMPLE_START += self.SAMPLE_OVERLAP
 
         return self.detectedVoice
 
     def printOutput(self):
         fig, axs = plt.subplots(3)
-        fig.suptitle('Voice Activity Detection')
+        fig.suptitle("Voice Activity Detection")
         print(len(self.data) / len(self.speechRatioList))
         axs[0].plot(self.speechRatioList)
-        axs[0].axhline(self.THRESHOLD, c='r')
+        axs[0].axhline(self.THRESHOLD, c="r")
         axs[0].set_title("Speech ratio list vs. THRESHOLD")
 
         axs[1].plot(np.array(self.detectedVoice), label="Detected")
         axs[1].legend()
         axs[1].set_title("Detected vs. non-detected region")
-        
+
         axs[2].plot(np.array(self.meanData), alpha=0.4, label="Not detected")
-        axs[2].plot(np.array(self.detectedVoice) * np.array(self.meanData), label="Detected")
+        axs[2].plot(
+            np.array(self.detectedVoice) * np.array(self.meanData), label="Detected"
+        )
         axs[2].legend()
         axs[2].set_title("Detected vs. non-detected region")
 
@@ -70,13 +72,13 @@ class VAD():
         filename = wavFile
 
         # Convert to mono
-        if channels == 2 :
+        if channels == 2:
             data = np.mean(data, axis=1, dtype=data.dtype)
             channels = 1
         return data, rate
 
     def __calculateFrequencies(self, audioData):
-        dataFreq = np.fft.fftfreq(len(audioData),1.0/self.rate)
+        dataFreq = np.fft.fftfreq(len(audioData), 1.0 / self.rate)
         dataFreq = dataFreq[1:]
         return dataFreq
 
@@ -86,10 +88,10 @@ class VAD():
         return dataAmpl ** 2
 
     def __connectEnergyWithFrequencies(self, data):
-    
+
         dataFreq = self.__calculateFrequencies(data)
         dataEnergy = self.__calculateEnergy(data)
-    
+
         energyFreq = {}
         for (i, freq) in enumerate(dataFreq):
             if abs(freq) not in energyFreq:
@@ -103,27 +105,28 @@ class VAD():
                 sumEnergy += energyFrequencies[f]
         return sumEnergy
 
-    def __medianFilter (self, x, k):
+    def __medianFilter(self, x, k):
         assert k % 2 == 1, "Median filter length must be odd."
         assert x.ndim == 1, "Input must be one-dimensional."
         k2 = (k - 1) // 2
-    
+
         y = np.zeros((len(x), k), dtype=x.dtype)
-        y[:,k2] = x
-        for i in range (k2):
+        y[:, k2] = x
+        for i in range(k2):
             j = k2 - i
-            y[j:,i] = x[:-j]
-            y[:j,i] = x[0]
-            y[:-j,-(i+1)] = x[j:]
-            y[-j:,-(i+1)] = x[-1]
+            y[j:, i] = x[:-j]
+            y[:j, i] = x[0]
+            y[:-j, -(i + 1)] = x[j:]
+            y[-j:, -(i + 1)] = x[-1]
         return np.median(y, axis=1)
 
     def smoothSpeechDetection(self):
-        medianWindow=int(self.SPEECH_WINDOW/self.window)
-        if medianWindow % 2 == 0 : 
+        medianWindow = int(self.SPEECH_WINDOW / self.window)
+        if medianWindow % 2 == 0:
             medianWindow = medianWindow - 1
-        medianEnergy = self.__medianFilter(np.array(self.detectedVoice), medianWindow)
-    
+        medianEnergy = self.__medianFilter(
+            np.array(self.detectedVoice), medianWindow)
+
         self.detectedVoice = medianEnergy
 
     def approximation(self):
@@ -136,17 +139,17 @@ class VAD():
                 count = count + 1
                 if not isStarted:
                     start = i
-                    #print('Started at ', i)
+                    # print('Started at ', i)
                     isStarted = True
             elif self.detectedVoice[i] == 1 and isStarted:
                 isStarted = False
-                #print('Ended at ', i)
+                # print('Ended at ', i)
                 if count < hold:
-                    #print('Editing from {} to {}'.format(start, start + count))
+                    # print('Editing from {} to {}'.format(start, start + count))
                     for j in range(start, start + count):
                         self.detectedVoice[j] = 1
                 count = 0
-        
+
     def cutAndSave(self, pathToSave, startNumber):
         number = startNumber
         count = 0
@@ -159,20 +162,20 @@ class VAD():
                 count = count + 1
                 if not isStarted:
                     start = i
-                    #print('Started at ', i)
+                    # print('Started at ', i)
                     isStarted = True
             elif self.detectedVoice[i] == 0 and isStarted:
                 isStarted = False
                 end = i
-                #print('Ended at ', i)
+                # print('Ended at ', i)
                 if count > 100:
-                    path = os.path.join(pathToSave, str(number) + '.wav')
+                    path = os.path.join(pathToSave, str(number) + ".wav")
                     startsAndCuts.append((start, end))
-                    wf.write(path, 44200, self.data[start * 480:end * 480].astype(np.int16))
-                    print(path + ' cutted and saved.')
+                    wf.write(
+                        path, 44200, self.data[start *
+                                               480: end * 480].astype(np.int16)
+                    )
+                    print(path + " cutted and saved.")
                     number = number + 1
                 count = 0
         print(startsAndCuts)
-
-
-                

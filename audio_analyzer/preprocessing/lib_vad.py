@@ -1,26 +1,23 @@
-import wave
-import webrtcvad
-import numpy as np
 import matplotlib.pyplot as plt
-from os import path
-import os 
-import scipy.io.wavfile as wf 
+import numpy as np
+import scipy.io.wavfile as wf
+import webrtcvad
 
-class WebRtcVad():
-    
+
+class WebRtcVad:
     def __init__(self):
         self.detectedVoice = np.array([])
 
     def test_process_file(self, path):
-        self.dt, self.rate = self.__readWAV(path) 
+        self.dt, self.rate = self.__readWAV(path)
 
-        with open(path, 'rb') as f:
+        with open(path, "rb") as f:
             data = f.read()
         frame_ms = 30
         n = int(8000 * 2 * 30 / 1000.0)
         frame_len = int(n / 2)
         webrtcvad.valid_rate_and_frame_length(8000, frame_len)
-        chunks = list(data[pos:pos + n] for pos in range(0, len(data), n))
+        chunks = list(data[pos: pos + n] for pos in range(0, len(data), n))
         if len(chunks[-1]) != n:
             chunks = chunks[:-1]
 
@@ -53,10 +50,8 @@ class WebRtcVad():
     def printOutput(self):
         plt.plot(np.array(self.detectedVoice), label="Detected")
         plt.legend()
-        plt.show(block= False)
+        plt.show(block=False)
 
-
-        
     def cutAndSave(self, pathToSave, startNumber):
         number = startNumber
         count = 0
@@ -76,10 +71,12 @@ class WebRtcVad():
                 isStarted = False
                 end = i
                 if count > hold:
-                    path = pathToSave + "/" +  str(number) + '.wav'
-                    wf.write(path, 44200, self.dt[start * 120:end * 120])
-                    cuts += ('\nFound voice activity in range between {:.2f} and {:.2f}.'.format(start*120/44200, end*120/44200))
-                    print('This record is saved as ' + path )
+                    path = pathToSave + "/" + str(number) + ".wav"
+                    wf.write(path, 44200, self.dt[start * 120: end * 120])
+                    cuts += "\nFound voice activity in range between {:.2f} and {:.2f}.".format(
+                        start * 120 / 44200, end * 120 / 44200
+                    )
+                    print("This record is saved as " + path)
                     number = number + 1
                 count = 0
 
@@ -87,10 +84,12 @@ class WebRtcVad():
                 isStarted = False
                 end = i
                 if count > hold:
-                    path = pathToSave + "/" +  str(number) + '.wav'
-                    wf.write(path, 44200, self.dt[start * 120:end * 120])
-                    cuts += ('\nFound voice activity in range between {:.2f} and {:.2f}.'.format(start*120/44200, end*120/44200))
-                    print('This record is saved as ' + path )
+                    path = pathToSave + "/" + str(number) + ".wav"
+                    wf.write(path, 44200, self.dt[start * 120: end * 120])
+                    cuts += "\nFound voice activity in range between {:.2f} and {:.2f}.".format(
+                        start * 120 / 44200, end * 120 / 44200
+                    )
+                    print("This record is saved as " + path)
                     number = number + 1
                 count = 0
         return cuts
@@ -101,7 +100,7 @@ class WebRtcVad():
         filename = wavFile
 
         # Convert to mono
-        if channels == 2 :
+        if channels == 2:
             data = np.mean(data, axis=1, dtype=data.dtype)
             channels = 1
         return data, rate
