@@ -18,6 +18,9 @@ curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poet
 ```
 (Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -UseBasicParsing).Content | python -
 ```
+Note, you also might need to add `poetry` directory to `PATH` variable.
+- Unix: `$HOME/.poetry/bin`
+- Windows: `%USERPROFILE%\.poetry\bin`
 4) Install required packages
 ```shell
 poetry install --no-dev
