@@ -14,7 +14,7 @@ class GUI():
         self.__ensure_dir('data/cutted')
         self.__ensure_dir('data/cuttedAndFiltered')
         self.master = Tk()
-        self.master.title = 'Voice recorder'
+        self.master.title('Voice recorder')
         self.dictophone = Dictophone()
 
         self.label1 = Label(self.master, text='Press start to record')

@@ -1,11 +1,11 @@
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=RuntimeWarning)
-from NeuralNetworks.MLPC import MLPC
-from DataLoading.DataLoader import DataLoader
-from Preprocessing.ButterworthFilter import ButterworthFilter
-from Preprocessing.VoiceActivityDetection import VAD
-from Preprocessing.LibVAD import WebRtcVad
+from audio_analyzer.neural_networks import MLPC
+from audio_analyzer.data_loading import DataLoader
+from audio_analyzer.preprocessing.butterworth_filter import ButterworthFilter
+from audio_analyzer.preprocessing.voice_activity_detection import VAD
+from audio_analyzer.preprocessing.lib_vad import WebRtcVad
 import numpy as np
 import os
 
@@ -48,7 +48,7 @@ def action():
     pathToRecord = 'data/record1.wav'
     pathToCutted = 'data/cutted'
 
-    pathToModel = 'threeEmotions.pkl'
+    pathToModel = 'model.pkl'
     pathToCuttedAndFiltered = 'data/cuttedAndFiltered'
     dataLoader = DataLoader('', 0.15)
     model = MLPC()
@@ -61,7 +61,8 @@ def action():
     x.test_process_file(pathToRecord)
     x.approximation()
     x.printOutput()
-    x.cutAndSave(pathToCutted, 0)
+    cuts = x.cutAndSave(pathToCutted, 0)
+    emotions = ""
     print('Voice activity detection completed. Voice cutted and saved.')
 
     for r, d, f in os.walk(pathToCutted):
@@ -76,13 +77,8 @@ def action():
 
             test = dataLoader.extractFeature(tmpSave, mfcc=True, chroma=True, mel=True)
             test = test.reshape(1, 180)
-            p = model.predict(np.array(test))
-            print(p)
-            #p = np.squeeze(p)
-            #if(p[0] > p[1]):
-            #    if p[0] > p[2]:
-            #        print('This is happy with probability {:.2f} %'.format(p[0] * 100))
-            #else:
-            #   print('This is sad with probability {:.2f} %'.format(p[1] * 100))
+            prediction = model.predict(np.array(test))
+            emotions += '\n' + str(prediction[0])
     deleteFiles(pathToCutted)
     deleteFiles(pathToCuttedAndFiltered)
+    return [cuts, emotions]
