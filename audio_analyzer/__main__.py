@@ -1,4 +1,4 @@
-from audio_analyzer.gui import GUI
+from audio_analyzer.gui.gui import GUI
 
 
 def run():

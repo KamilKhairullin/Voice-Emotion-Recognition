@@ -3,24 +3,19 @@ Audio tracker team 1
 
 ## Install
 1) Install python 3.8
-2) Create virtual environment
+2) Install poetry
+- MacOS / Linux / Bash on Windows 
 ```shell
-python3.8 -m venv venv
-```
-3) Activate virtual environment
-- Linux 
-```shell
-source venv/bin/activate
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3 -
 ```
 
-- Windows:
+- Windows Powershell
 ```
-venv\Scripts\activate.bat
+(Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -UseBasicParsing).Content | python3 -
 ```
-4) Install packages
+3) Install required packages
 ```shell
-python -m pip install poetry
-poetry install
+poetry install --no-dev
 ```
 
 ## Run
