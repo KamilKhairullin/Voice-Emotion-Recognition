@@ -2,18 +2,23 @@
 Audio tracker team 1
 
 ## Install
-1) Install python 3.8
-2) Install poetry
+1) Install Python 3.8
+2) Clone this repository and go to project folder
+```shell
+git clone https://github.com/KamilKhairullin/LeanSWDevelopement_team1.git
+cd LeanSWDevelopement_team1
+```
+3) Install poetry
 - MacOS / Linux / Bash on Windows 
 ```shell
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3 -
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
 ```
-
+(replace `python` with `python3` or `python3.8` if you have several python version)
 - Windows Powershell
 ```
-(Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -UseBasicParsing).Content | python3 -
+(Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -UseBasicParsing).Content | python -
 ```
-3) Install required packages
+4) Install required packages
 ```shell
 poetry install --no-dev
 ```
