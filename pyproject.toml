@@ -8,7 +8,10 @@ authors = ["Your Name <you@example.com>"]
 python = "3.8.*"
 librosa = "^0.8.0"
 numpy = "^1.20.1"
-PyAudio = "^0.2.11"
+pyaudio = [
+    {path = "PyAudio-0.2.11-cp38-cp38-win_amd64.whl", platform = "windows" },
+    {version = "0.2.11", platform = "linux" }
+]
 matplotlib = "^3.3.4"
 webrtcvad = "^2.0.10"
 pydub = "^0.25.1"
