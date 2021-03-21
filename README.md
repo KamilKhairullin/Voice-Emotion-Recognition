@@ -39,3 +39,10 @@ poetry run audio
 * Alexander Trushin
 ## Project description
 We created an audio recorder with gui that is able to record audio, classify user's speech emotion.
+
+## Change number of emotions
+By default, there is a recognition of three emotions: sad, happy, neutral.
+You can change the model to 2 emotions (sad and happy) by:
+1. rename the file "model.pkl" to any name (example: "twoEmotions.pkl")
+2. rename the file "twoEmotions.pkl" to "model.pkl"
+3. rerun peogram by "poetry run audio"
