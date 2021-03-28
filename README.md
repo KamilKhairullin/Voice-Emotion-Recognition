@@ -5,7 +5,7 @@ Audio tracker team 1
 1) Install [Python 3.8](https://www.python.org/downloads/)
 2) Clone this repository and go to project folder
 ```shell
-git clone https://github.com/KamilKhairullin/LeanSWDevelopement_team1.git
+git clone https://github.com/KamilKhairullin/Voice-Emotion-Recognition.git
 cd LeanSWDevelopement_team1
 ```
 3) Install poetry
